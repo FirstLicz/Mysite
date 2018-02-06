@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'course',
+    'organization',
+    'operation',
 ]
 
 #重载用户表，直接使用model app的名
