@@ -57,8 +57,35 @@ class UserFavortie(models.Model):
     user = models.ForeignKey(UserProfile, verbose_name='用户')
     fav_id = models.IntegerField(default=0,verbose_name='数据ID')
     fav_type = models.IntegerField(default=1,verbose_name='收藏类型',choices=FAV_TYPE)
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='评论时间')
 
     class Meta:
         verbose_name='用户收藏'
         verbose_name_plural=verbose_name
 
+
+class UserMessage(models.Model):
+    '''
+        用户消息；分两种，一种是系统消息，一种是单个用户消息
+    '''
+    user = models.IntegerField(default=0,verbose_name='用户ID',help_text='0,代表所有用户消息;其他代表接收用户')
+    message = models.CharField(max_length=500,verbose_name='消息')
+    has_read = models.BooleanField(default=False,verbose_name='是否已读')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='评论时间')
+
+    class Meta:
+        verbose_name='用户消息'
+        verbose_name_plural=verbose_name
+
+
+class UserCourse(models.Model):
+    '''
+        用户课程学习
+    '''
+    user = models.ForeignKey(UserProfile, verbose_name='用户')
+    course = models.ForeignKey(Course, verbose_name='课程')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='学习时间')
+
+    class Meta:
+        verbose_name = '用户课程'
+        verbose_name_plural = verbose_name
