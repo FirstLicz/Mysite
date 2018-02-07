@@ -15,6 +15,7 @@ import sys
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
+sys.path.insert(0,os.path.join(BASE_DIR,'extra_apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'course',
     'organization',
     'operation',
+    'xadmin',
+    'crispy_forms',
 ]
 
 #重载用户表，直接使用model app的名
@@ -122,7 +125,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -132,3 +135,18 @@ STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+        },
+    },
+}

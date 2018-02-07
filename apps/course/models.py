@@ -52,7 +52,7 @@ class Lession(models.Model):
         return self.name
 
 
-class Vide(models.Model):
+class Video(models.Model):
 
     lession = models.ForeignKey(Lession,verbose_name='章节')
     name = models.CharField(max_length=50,verbose_name='视频名')
