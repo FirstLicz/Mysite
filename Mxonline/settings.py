@@ -17,6 +17,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
 sys.path.insert(0,os.path.join(BASE_DIR,'extra_apps'))
 
+cmooc = 'cmooc.log'
+#logger Storage road king
+#os.name=='nt':
+log_path = BASE_DIR + r'\%s' %cmooc
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -147,9 +153,24 @@ TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': 'cmooc %(levelname)s %(asctime)s %(module)s %(funcName)s %(lineno)d %(message)s'
+        },
+        'simple': {
+            'format': 'cmooc %(levelname)s %(message)s'
+        },
+    },
+
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+        },
+        'logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename':log_path,
         },
     },
     'loggers': {
