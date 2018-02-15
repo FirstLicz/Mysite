@@ -19,14 +19,16 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 
 
-from users.views import user_login,user_logout
+from users.views import LoginView,user_logout,RegisterView
 
 import xadmin
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
+    url(r'^captcha/', include('captcha.urls')),  # 这是生成验证码的图片
     #url(r'^',include('users.urls')),
     url(r'^$',TemplateView.as_view(template_name='index.html')),
-    url(r'^login/$',user_login,name='login'),
+    url(r'^login/$',LoginView.as_view(),name='login'),
+    url(r'^register/$',RegisterView.as_view(),name='register'),
     url(r'^logout/$',user_logout,name='logout'),
 ]

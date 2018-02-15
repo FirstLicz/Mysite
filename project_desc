@@ -5,4 +5,17 @@
     少前端样式
     快速开发
 
+session 和 Cookie 实现机制
+
+http 是无状态协议
+
+
+使用教程
+
+
+安装验证码库
+pip install django-simple-captcha==0.4.6
+
+settings中添加app，
+makemigrations,migrate
 

@@ -50,10 +50,17 @@ INSTALLED_APPS = [
     'operation',
     'xadmin',
     'crispy_forms',
+    'captcha',
 ]
 
 #重载用户表，直接使用model app的名
 AUTH_USER_MODEL = "users.UserProfile"
+
+#Application definition  重载变量
+AUTHENTICATION_BACKENDS=(
+    'users.utils.CustomBackend',
+)
+
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
