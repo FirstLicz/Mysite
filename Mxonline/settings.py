@@ -154,6 +154,12 @@ STATICFILES_DIRS = (
 
 )
 
+EMAIL_HOST = "smtp.163.com"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "My_django_online@163.com"
+EMAIL_HOST_PASSWORD = "mxonline1111"
+EMAIL_USE_SSL = True
+EMAIL_FROM = "My_django_online@163.com"
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
