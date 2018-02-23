@@ -21,6 +21,8 @@ from django.views.generic import TemplateView
 
 from users.views import LoginView,user_logout,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView
 
+
+
 import xadmin
 
 urlpatterns = [
@@ -35,4 +37,6 @@ urlpatterns = [
     url(r'^forgetpwd/$',ForgetPwdView.as_view(),name='forgetpwd'),
     url(r'^reset/(?P<email>.*)/(?P<reset_code>.*)/$',ResetView.as_view(),name='reset'),
     url(r'^modifypwd/$',ModifyPwdView.as_view(),name='modifypwd'),
+
+    url(r'^organzation/$',include('organization.urls',namespace='organzation')),
 ]

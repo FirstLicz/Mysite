@@ -33,3 +33,5 @@ class ModifyPwdForm(forms.Form):
 
     password1 = forms.CharField(required=True,min_length=5)
     password2 = forms.CharField(required=True,min_length=5)
+
+
