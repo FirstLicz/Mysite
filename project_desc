@@ -19,3 +19,9 @@ pip install django-simple-captcha==0.4.6
 settings中添加app，
 makemigrations,migrate
 
+django 第三方分页器安装
+在github 上搜索  django-pure-pagination  进行安装
+
+课程机构的表单提交：modelform
+
+

@@ -17,10 +17,10 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from django.views.generic import TemplateView
-
+from django.views.static import serve
 
 from users.views import LoginView,user_logout,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView
-
+from Mxonline.settings import MEDIA_ROOT
 
 
 import xadmin
@@ -38,5 +38,8 @@ urlpatterns = [
     url(r'^reset/(?P<email>.*)/(?P<reset_code>.*)/$',ResetView.as_view(),name='reset'),
     url(r'^modifypwd/$',ModifyPwdView.as_view(),name='modifypwd'),
 
-    url(r'^organzation/$',include('organization.urls',namespace='organzation')),
+    url(r'^organzation/',include('organization.urls',namespace='organzation')),
+
+    #配置上传文件的访问处理函数
+    #url(r'media/(?P<path>).*',serve,{'document_root':MEDIA_ROOT}),
 ]
