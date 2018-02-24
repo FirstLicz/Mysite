@@ -13,6 +13,12 @@ from django.db import models
     CityDict    -   城市信息
 '''
 
+ORG_CATEGORY = (
+    ('org','培训机构'),
+    ('colleges','高校'),
+    ('personal','个人')
+)
+
 
 class CityDict(models.Model):
     name = models.CharField(max_length=50,verbose_name='城市')
@@ -23,9 +29,13 @@ class CityDict(models.Model):
         verbose_name='城市'
         verbose_name_plural=verbose_name
 
+    def __str__(self):
+        return self.name
+
 class CourseOrg(models.Model):
 
     name = models.CharField(verbose_name='机构名称',max_length=50)
+    category = models.CharField(max_length=20,choices=ORG_CATEGORY,verbose_name='机构类别',default='org')
     desc = models.TextField(verbose_name='机构描述')
     click_nums = models.IntegerField(default=0,verbose_name='点击数')
     fav_nums = models.IntegerField(default=0,verbose_name='收藏数')
@@ -37,6 +47,9 @@ class CourseOrg(models.Model):
     class Meta:
         verbose_name='课程机构'
         verbose_name_plural=verbose_name
+
+    def __str__(self):
+        return self.name
 
 class Teacher(models.Model):
 
@@ -54,7 +67,8 @@ class Teacher(models.Model):
         verbose_name='讲师'
         verbose_name_plural=verbose_name
 
-
+    def __str__(self):
+        return self.name
 
 
 
