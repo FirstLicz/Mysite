@@ -86,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.media',
             ],
         },
     },
@@ -162,8 +163,8 @@ EMAIL_USE_SSL = True
 EMAIL_FROM = "My_django_online@163.com"
 
 #上传文件路径配置
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'static/media')
+MEDIA_URL = '/static/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
