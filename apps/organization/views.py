@@ -5,7 +5,7 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 
 from organization.models import CourseOrg,CityDict
-from .forms import UserAskForm
+from organization.forms import UserAskForm
 
 
 # Create your views here.
@@ -48,13 +48,14 @@ class OrganzationView(View):
 
 class AddUserAskView(View):
     '''
-        用户添加咨询
+        用户添加咨询;
+        json 格式的标准：' {"key":"val"} '
     '''
     def post(self,request):
         userask_form = UserAskForm(request.POST)
         if userask_form.is_valid():
-            user_ask = userask_form.save(commit=True)
-            return HttpResponse("{'status':'success'}",content_type='application/json')
+            userask_form.save(commit=True)
+            return HttpResponse('{"status":"success"}',content_type='application/json')
         else:
-            return HttpResponse("{'status':'fail','message': {0}}".format(userask_form.errors))
+            return HttpResponse('{"status":"fail","msg": "添加出错"}',content_type='application/json')
 

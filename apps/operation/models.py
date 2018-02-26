@@ -27,7 +27,7 @@ FAV_TYPE=(
 class UserAsk(models.Model):
 
     name = models.CharField(max_length=30,verbose_name='姓名')
-    moblie = models.CharField(max_length=11,verbose_name='手机号码')
+    mobile = models.CharField(max_length=11,verbose_name='手机号码')
     course_name = models.CharField(max_length=20,verbose_name='课程名')
     add_time = models.DateTimeField(default=datetime.now,verbose_name='添加时间')
 
