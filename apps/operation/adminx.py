@@ -11,9 +11,9 @@ import xadmin
 
 
 class UserAskAdmin(object):
-    list_display = ['name','moblie','course_name','add_time']
-    search_fields = ['name','moblie','course_name','add_time']
-    list_filter = ['name','moblie','course_name','add_time']
+    list_display = ['name','mobile','course_name','add_time']
+    search_fields = ['name','mobile','course_name','add_time']
+    list_filter = ['name','mobile','course_name','add_time']
 
 
 class UserFavortieAdmin(object):
