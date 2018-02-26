@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^reset/(?P<email>.*)/(?P<reset_code>.*)/$',ResetView.as_view(),name='reset'),
     url(r'^modifypwd/$',ModifyPwdView.as_view(),name='modifypwd'),
 
-    url(r'^organzation/',include('organization.urls',namespace='organzation')),
+    url(r'^org/',include('organization.urls',namespace='org')),
 
     #配置上传文件的访问处理函数
     #url(r'media/(?P<path>).*',serve,{'document_root':MEDIA_ROOT}),

@@ -163,9 +163,10 @@ EMAIL_HOST_PASSWORD = "mxonline1111"
 EMAIL_USE_SSL = True
 EMAIL_FROM = "My_django_online@163.com"
 
-#上传文件路径配置
+#下载文件路径配置
 MEDIA_URL = '/static/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+#上传文件路径配置
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/media')
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 

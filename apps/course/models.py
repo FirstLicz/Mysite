@@ -4,6 +4,9 @@ from datetime import datetime
 
 from django.db import models
 
+
+from organization.models import CourseOrg,Teacher
+
 # Create your models here.
 '''
     course          课程基本信息
@@ -22,6 +25,7 @@ DEGREE=(
 
 
 class Course(models.Model):
+    course_org = models.ForeignKey(CourseOrg,verbose_name='课程机构',null=True,blank=True)
     name = models.CharField(max_length=50,verbose_name='课程名')
     desc = models.CharField(max_length=300,verbose_name='课程描述')
     detail = models.TextField(verbose_name='课程详情',null=True,blank=True)
@@ -36,6 +40,9 @@ class Course(models.Model):
     class Meta:
         verbose_name='课程'
         verbose_name_plural=verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Lession(models.Model):
@@ -63,6 +70,8 @@ class Video(models.Model):
         verbose_name='视频'
         verbose_name_plural=verbose_name
 
+    def __str__(self):
+        return self.name
 
 class CourseResource(models.Model):
 
@@ -75,5 +84,6 @@ class CourseResource(models.Model):
         verbose_name='课程资源'
         verbose_name_plural=verbose_name
 
-
+    def __str__(self):
+        return self.name
 
