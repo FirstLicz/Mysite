@@ -25,3 +25,15 @@ django 第三方分页器安装
 课程机构的表单提交：modelform
 
 Meta中的字段名和提交的表单中的name名一定要一致
+
+template中的选择字段，前端显示，需要做特殊处理
+DEGREE=(
+    ('cj','初级'),
+    ('zj','中级'),
+    ('gj','高级'),
+    ('dj','顶级'),
+)
+degree = models.CharField(max_length=2,choices=DEGREE,verbose_name='等级')
+{{ hot_cours.degree }}
+get_fieldname_display
+{{ hot_cours.get_degree_display }}

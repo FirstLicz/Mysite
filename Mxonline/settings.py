@@ -89,6 +89,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.core.context_processors.media',
             ],
+            #自定义过滤器
         },
     },
 ]
