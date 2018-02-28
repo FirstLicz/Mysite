@@ -57,10 +57,12 @@
             <div class="content">
                 <div class="mod-tab-menu">
                     <ul class="course-menu clearfix">
-                        <li><a class="ui-tabs-active active" id="learnOn"  href="course-video.html"><span>章节</span></a></li>
-                        <li><a id="commentOn" class="" href="course-comment.html"><span>评论</span></a></li>
+                        <li><a class="ui-tabs-active {% if flag_tag == 'video' %}active{% endif %}" id="learnOn"  href="/course/{{ course.id }}/info/"><span>章节</span></a></li>
+                        <li><a id="commentOn" class="{% if flag_tag == 'comment' %}active{% endif %}" href="/course/{{ course.id }}/comment/"><span>评论</span></a></li>
                     </ul>
                 </div>
+
+            <!-- 章节内容 -->
                 <div id="notice" class="clearfix">
                     <div class="l"> <strong>课程公告:</strong> <a  href="javascript:void(0)">Spring的文档以及相关的jar文件已上传</a> </div>
                 </div>
@@ -69,23 +71,22 @@
 
                 {% for lession in lessions %}
                     <div class="chapter chapter-active" >
-                    <h3>
-                        <strong><i class="state-expand"></i>{{ lession.name }}</strong>
-                    </h3>
+                        <h3>
+                            <strong><i class="state-expand"></i>{{ lession.name }}</strong>
+                        </h3>
 
-                    <ul class="video">
-                    {% for video in lession.video_set.all %}
-                        <li>
-                            <a target="_blank" href='/course/{{ video.id }}/video/' class="J-media-item studyvideo">{{ video.name }}({{ video.learn_times }})
-                                <i class="study-state"></i>
-                            </a>
-                        </li>
-                    {% endfor %}
+                        <ul class="video">
+                        {% for video in lession.video_set.all %}
+                            <li>
+                                <a target="_blank" href='/course/{{ video.id }}/video/' class="J-media-item studyvideo">{{ video.name }}({{ video.learn_times }})
+                                    <i class="study-state"></i>
+                                </a>
+                            </li>
+                        {% endfor %}
 
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
                 {% endfor %}
-
                 </div>
 
             </div>
@@ -138,8 +139,8 @@
                                 <ul class="other-list">
 
                                     <li class="curr">
-                                        <a href="course-detail.html" target="_blank">
-                                            <img src="/static/media/courses/2016/11/540e57300001d6d906000338-240-135_n0L8vbw.jpg" alt="django与vuejs实战项目2">
+                                        <a href="/course/{{ course.id }}/detail/" target="_blank">
+                                            <img src="{{ MEDIA_URL }}" alt="django与vuejs实战项目2">
                                             <span class="name autowrap">django与vuejs实战项目2</span>
                                         </a>
                                     </li>

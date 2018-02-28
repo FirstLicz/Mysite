@@ -3,11 +3,13 @@ from django.views.generic import View
 
 
 from .models import Course
-from operation.models import UserFavortie
+from operation.models import UserFavortie,CourseComments,UserCourse
 from course.models import CourseResource
+from utils.login_utils import LoginRequiredMust
+
 
 from pure_pagination.paginator import Paginator,PageNotAnInteger
-
+import json
 # Create your views here.
 
 
@@ -45,7 +47,7 @@ class CourseDescView(View):
         course.save()
         fav_course_flag = False
         fav_org_flag = False
-        if request.user.is_authenticated:
+        if request.user.is_authenticated():
             fav_course_flag = UserFavortie.objects.filter(user=request.user, fav_id=int(course_id), fav_type=1)
             if fav_course_flag:
                 fav_course_flag = True
@@ -58,7 +60,7 @@ class CourseDescView(View):
         })
 
 
-class CourseInfoView(View):
+class CourseInfoView(LoginRequiredMust,View):
     '''
         点击我要学习后的页面
     '''
@@ -66,15 +68,51 @@ class CourseInfoView(View):
         course = Course.objects.get(id=int(course_id))
         course.students +=1
         course.save()
+        flag_tag = 'video'
+        course_users = UserCourse.objects.filter(course=course)
+        #遍历改课程学的学生所有ID
+        user_ids = [ cours.user.id for cours in course_users ]
+        #找出课程中学生
+
         lessions = course.lession_set.all()
         return render(request,'course/course-video.html',{
             'course':course,'lessions':lessions,
+            'flag_tag':flag_tag,
         })
 
 
-class CourseCommentView(View):
-
+class CourseCommentView(LoginRequiredMust,View):
+    '''
+        课程的评论
+    '''
     def get(self,request,course_id):
+        flag_tag = 'comment'
+        course = Course.objects.get(id=int(course_id))
+        all_comments = course.coursecomments_set.all()[:8]
+        return render(request,'course/course-comment.html',{
+            'flag_tag':flag_tag,'course':course,
+            'all_comments':all_comments,
+        })
 
+class CourseAddCommentView(View):
 
-        return render(request,'course/course-comment.html')
+    def post(self,request):
+        context = {}
+        context['status'] = 'fail'
+        context['msg'] = '用户未登录'
+        if not request.user.is_authenticated():
+            return HttpResponse(json.dumps(context),content_type='application/json')
+        course_id = request.POST.get('course_id', 0)
+        comments = request.POST.get('comments', '')
+        if int(course_id) > 0 and len(comments)!=0:
+            course = Course.objects.get(id=int(course_id))
+            comment = CourseComments()
+            comment.course=course
+            comment.user = request.user
+            comment.comment = comments
+            comment.save()
+            context['status'] = 'success'
+            context['msg'] = '评论成功'
+        else:
+            context['msg'] = '评论失败'
+        return HttpResponse(json.dumps(context),content_type='application/json')

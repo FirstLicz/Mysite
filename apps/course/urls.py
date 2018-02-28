@@ -5,7 +5,7 @@ __author__ = 'licz'
 __time__ = '2018/2/27 8:58'
 
 
-from course.views import CourseListView,CourseDescView,CourseCommentView,CourseInfoView
+from course.views import CourseListView,CourseDescView,CourseCommentView,CourseInfoView,CourseAddCommentView
 
 
 from django.conf.urls import url
@@ -15,4 +15,7 @@ urlpatterns = [
     url(r'^(?P<course_id>\d+)/detail/$',CourseDescView.as_view(),name='detail'),
     url(r'^(?P<course_id>\d+)/info/$',CourseInfoView.as_view(),name='info'),
     url(r'^(?P<course_id>\d+)/comment/$',CourseCommentView.as_view(),name='comment'),
+
+    #异步添加评论
+    url(r'^add_comment/$',CourseAddCommentView.as_view(),name='add_comment'),
 ]
