@@ -138,40 +138,14 @@
                                 <!-- img 200 x 112 -->
                                 <ul class="other-list">
 
-                                    <li class="curr">
-                                        <a href="/course/{{ course.id }}/detail/" target="_blank">
-                                            <img src="{{ MEDIA_URL }}" alt="django与vuejs实战项目2">
-                                            <span class="name autowrap">django与vuejs实战项目2</span>
+                                    {% for cous in other_courses %}
+                                        <li class="curr">
+                                        <a href="/course/{{ cous.id }}/detail/" target="_blank">
+                                            <img src="{{ MEDIA_URL }}{{ cous.image }}" alt="{{ cous.name }}">
+                                            <span class="name autowrap">{{ cous.name }}</span>
                                         </a>
                                     </li>
-
-                                    <li class="curr">
-                                        <a href="course-detail.html" target="_blank">
-                                            <img src="/static/media/courses/2016/12/python面向对象.jpg" alt="python面向对象">
-                                            <span class="name autowrap">python面向对象</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="curr">
-                                        <a href="course-detail.html" target="_blank">
-                                            <img src="/static/media/courses/2016/12/python文件处理.jpg" alt="python文件处理">
-                                            <span class="name autowrap">python文件处理</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="curr">
-                                        <a href="course-detail.html" target="_blank">
-                                            <img src="/static/media/courses/2016/11/mysql.jpg" alt="django入门">
-                                            <span class="name autowrap">django入门</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="curr">
-                                        <a href="course-detail.html" target="_blank">
-                                            <img src="/static/media/courses/2016/12/mysql.jpg" alt="xadmin进阶开发">
-                                            <span class="name autowrap">xadmin进阶开发</span>
-                                        </a>
-                                    </li>
+                                    {% endfor %}
 
                                 </ul>
                             </div>

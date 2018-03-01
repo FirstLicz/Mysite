@@ -4,14 +4,17 @@ from django.views.generic import View
 
 from .models import Course
 from operation.models import UserFavortie,CourseComments,UserCourse
-from course.models import CourseResource
+from course.models import CourseResource,Video
 from utils.login_utils import LoginRequiredMust
 
 
 from pure_pagination.paginator import Paginator,PageNotAnInteger
 import json
+import logging
 # Create your views here.
 
+
+logger = logging.getLogger('defulat')
 
 class CourseListView(View):
 
@@ -68,16 +71,25 @@ class CourseInfoView(LoginRequiredMust,View):
         course = Course.objects.get(id=int(course_id))
         course.students +=1
         course.save()
+        # 查询用户是否已经关联了该课程
+        user_course = UserCourse.objects.filter(user=request.user,course=course)
+        if not user_course:
+            user_cous = UserCourse(user=request.user,course=course)
+            user_cous.save()
         flag_tag = 'video'
         course_users = UserCourse.objects.filter(course=course)
         #遍历改课程学的学生所有ID
         user_ids = [ cours.user.id for cours in course_users ]
-        #找出课程中学生
-
+        print('user_ids = %s' %user_ids)
+        #找出学过该课程的所有学生
+        all_users_courses = UserCourse.objects.filter(user_id__in=user_ids)
+        all_course_ids = [ course.course.id for course in all_users_courses]
+        print('all_course_ids = %s' %all_course_ids)
+        other_courses = Course.objects.filter(id__in=all_course_ids).order_by('-click_nums')[:5]
         lessions = course.lession_set.all()
         return render(request,'course/course-video.html',{
             'course':course,'lessions':lessions,
-            'flag_tag':flag_tag,
+            'flag_tag':flag_tag,'other_courses':other_courses
         })
 
 
@@ -93,6 +105,34 @@ class CourseCommentView(LoginRequiredMust,View):
             'flag_tag':flag_tag,'course':course,
             'all_comments':all_comments,
         })
+
+
+class CoursePlayVideoView(View):
+    """
+        视频播放view
+    """
+    def get(self,request,video_id):
+        try:
+            video = Video.objects.get(id=int(video_id))
+        except :
+            logging.info('video id is not exist')
+            return HttpResponse('<h1>页面不存在<h1>')
+        course = video.lession.course
+        lessions = course.lession_set.all()
+        course_users = UserCourse.objects.filter(course=course)
+        # 遍历改课程学的学生所有ID
+        user_ids = [cours.user.id for cours in course_users]
+        print('user_ids = %s' % user_ids)
+        # 找出学过该课程的所有学生
+        all_users_courses = UserCourse.objects.filter(user_id__in=user_ids)
+        all_course_ids = [course.course.id for course in all_users_courses]
+        print('all_course_ids = %s' % all_course_ids)
+        other_courses = Course.objects.filter(id__in=all_course_ids).order_by('-click_nums')[:5]
+        return render(request,'course/course-play.html',{
+            "video":video,'course':course,
+            'lessions': lessions,'other_courses':other_courses,
+        })
+
 
 class CourseAddCommentView(View):
 
@@ -116,3 +156,4 @@ class CourseAddCommentView(View):
         else:
             context['msg'] = '评论失败'
         return HttpResponse(json.dumps(context),content_type='application/json')
+
