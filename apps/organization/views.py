@@ -11,9 +11,12 @@ from operation.models import UserFavortie
 
 
 import json
+import logging
 
 # Create your views here.
 
+
+logger = logging.getLogger('default')
 
 class OrganzationView(View):
 
@@ -46,7 +49,7 @@ class OrganzationView(View):
         return render(request,'organization/org-list.html',{
             'all_orgs':orgs,'all_city':all_city,
             'city_id':city_id,'category':category,'orgs_order':orgs_order,
-            'sort_category':sort_category,
+            'sort_category':sort_category,'flag':'org'
         })
 
 
@@ -127,7 +130,9 @@ class OrgDescView(View):
 
 
 class OrgTeacherView(View):
-
+    '''
+        机构，讲师列表页
+    '''
     def get(self,request,org_id):
         # 获取机构
         course_org = CourseOrg.objects.get(id=org_id)
@@ -139,6 +144,49 @@ class OrgTeacherView(View):
         return render(request,'organization/org_detail_teacher.html',{
             'course_org':course_org,'current_flag':'teacher',
             'teachers':teachers,'fav_flag':fav_flag,
+        })
+
+
+class TeacherListView(View):
+    '''
+        讲师列表页
+    '''
+    def get(self,request):
+        sort_ = request.GET.get('sort','default')
+        teachers = Teacher.objects.all()
+        # 排序过滤
+        if sort_=='hot':
+            teachers = teachers.order_by('-click_nums')
+        #讲师排行
+        order_teachers = teachers.order_by('-click_nums')[:10]
+        all_persons = len(teachers)
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        # 分页显示
+        p = Paginator(teachers,5, request=request)
+        teachers = p.page(page)
+        return render(request,'organization/teachers-list.html',{
+            'flag':'teacher',"teachers":teachers,
+            'sort_':sort_,'order_teachers':order_teachers,
+            "all_persons":all_persons,
+        })
+
+
+class TeacherDetailView(View):
+
+    def get(self,request,teacher_id):
+        try:
+            teacher = Teacher.objects.get(id=int(teacher_id))
+        except:
+            logger.info('teacher_id=%s is not exist' %(teacher_id))
+            return HttpResponse('<h1>网页不存在404</h1>')
+        t_courses = teacher.course_set.all()
+        t_ranking = Teacher.objects.filter(org=teacher.org).order_by('-click_nums')[:10]
+        return render(request,'organization/teacher-detail.html',{
+            'teacher':teacher,'flag':'teacher',
+            't_ranking':t_ranking,'t_courses':t_courses,
         })
 
 

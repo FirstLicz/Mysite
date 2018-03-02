@@ -36,6 +36,7 @@ class CourseOrg(models.Model):
 
     name = models.CharField(verbose_name='机构名称',max_length=50)
     category = models.CharField(max_length=20,choices=ORG_CATEGORY,verbose_name='机构类别',default='org')
+    synopsis = models.CharField(max_length=100,verbose_name='机构简介',default='')
     desc = models.TextField(verbose_name='机构描述')
     click_nums = models.IntegerField(default=0,verbose_name='点击数')
     fav_nums = models.IntegerField(default=0,verbose_name='收藏数')
@@ -61,6 +62,8 @@ class Teacher(models.Model):
 
     org = models.ForeignKey(CourseOrg,verbose_name='所属机构')
     name = models.CharField(max_length=50,verbose_name='讲师名')
+    age = models.IntegerField(default=18,verbose_name='讲师年龄')
+    desc =models.CharField(max_length=300,verbose_name='讲师描述',null=True,blank=True)
     image = models.ImageField(upload_to='teacher/%Y/%m',verbose_name='讲师头像',null=True,blank=True)
     work_year = models.IntegerField(default=0,verbose_name='工作年限')
     work_company = models.CharField(max_length=100,verbose_name='所在单位')
