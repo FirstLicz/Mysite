@@ -184,9 +184,20 @@ class TeacherDetailView(View):
             return HttpResponse('<h1>网页不存在404</h1>')
         t_courses = teacher.course_set.all()
         t_ranking = Teacher.objects.filter(org=teacher.org).order_by('-click_nums')[:10]
+        #查询机构收藏
+        flag_org = False
+        result = UserFavortie.objects.filter(user=request.user,fav_id=teacher.org_id,fav_type=3)
+        if result:
+            flag_org = True
+        # 查询讲师收藏
+        flag_teacher = False
+        result = UserFavortie.objects.filter(user=request.user, fav_id=teacher.id, fav_type=2)
+        if result:
+            flag_teacher = True
         return render(request,'organization/teacher-detail.html',{
             'teacher':teacher,'flag':'teacher',
             't_ranking':t_ranking,'t_courses':t_courses,
+            'flag_org':flag_org,'flag_teacher':flag_teacher,
         })
 
 
