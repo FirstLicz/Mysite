@@ -32,7 +32,7 @@ SECRET_KEY = '6_(jh5!yojax7csz)-1v4^^n1$sn^%y5xa=#a%4agzd@62a_45'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'captcha',
     'pure_pagination',
+    'DjangoUeditor',
 ]
 
 #重载用户表，直接使用model app的名
@@ -154,7 +155,6 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR,'static'),
-
 )
 
 EMAIL_HOST = "smtp.163.com"

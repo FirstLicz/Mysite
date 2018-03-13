@@ -17,12 +17,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.views.generic import TemplateView
 
-from .views import *
-
-import xadmin
+from users.views import UserInfoView,ModifyHeadImageView,UpdatePwdView
 
 urlpatterns = [
-    url(r'^$',TemplateView.as_view(template_name='index.html')),
-    url(r'^login/$',my_login,name='login'),
-    url(r'^logout/$',my_logout,name='logout'),
+    #个人中心
+    url(r'^info/$',UserInfoView.as_view(),name='user_info'),
+
+    #修改头像
+    url(r'^modify_head/$',ModifyHeadImageView.as_view(),name='modify_head'),
+
+    #修改密码
+    url(r'^update_pwd/$',UpdatePwdView.as_view(),name='update_pwd'),
+
 ]

@@ -7,8 +7,10 @@ __time__ = '2018/2/7 10:53'
 
 import xadmin
 from xadmin import views
+from xadmin.plugins.auth import UserAdmin
+from django.contrib.auth.models import User
 
-from .models import EmailVerifyRecord,Banner
+from .models import EmailVerifyRecord,Banner,UserProfile
 
 
 class BaseSetting(object):
@@ -27,6 +29,7 @@ class EmailVerifyRecordAdminx(object):
     list_display= ['code','email','send_type','send_time']
     search_fields = ['code','email','send_type','send_time']
     list_filter = ['code','email','send_type','send_time']
+
 
 class BannerAdminx(object):
 

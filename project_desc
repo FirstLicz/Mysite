@@ -37,3 +37,6 @@ degree = models.CharField(max_length=2,choices=DEGREE,verbose_name='等级')
 {{ hot_cours.degree }}
 get_fieldname_display
 {{ hot_cours.get_degree_display }}
+
+
+template 中关闭转义功能  {% autoescape off %}{{}}{% endautoescape %}

@@ -1,6 +1,6 @@
 
 
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.auth import login,authenticate
 from django.views.generic import View
@@ -9,10 +9,11 @@ from django.views.generic import View
 from users.models import UserProfile,EmailVerifyRecord
 from Mxonline.settings import BASE_DIR
 from .utils import decorate_logging_checker
-from .forms import LoginForm,RegisterForm,ForgetPwdForm,ModifyPwdForm
+from .forms import LoginForm,RegisterForm,ForgetPwdForm,ModifyPwdForm,ModifyHeadForm
 from utils.email_send import send_email
+from utils.login_utils import LoginRequiredMust
 
-
+import json
 import logging
 
 # Create your views here.
@@ -35,7 +36,7 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, 'index.html')
+                    return HttpResponseRedirect('/')
                 return render(request, 'login.html', {'msg': '账号没有激活'})
             else:
                 return render(request, 'login.html', {'msg': '账号或密码错误'})
@@ -127,8 +128,38 @@ class ModifyPwdView(View):
             return render(request,'password_reset.html',{'modify_form' : modify_form ,})
 
 
+class UserInfoView(LoginRequiredMust,View):
+
+    def get(self,request):
+
+        return render(request,'users/usercenter-info.html')
 
 
+class ModifyHeadImageView(LoginRequiredMust,View):
+
+    def post(self,request):
+        modify_head = ModifyHeadForm(request.POST,request.FILES,instance=request.user)
+        if modify_head.is_valid():
+            modify_head.save()
+            return HttpResponse(json.dumps({'status':'success'}))
+        return HttpResponse(json.dumps({'status':'fail'}))
+
+class UpdatePwdView(View):
+    '''
+        个人中心，修改密码
+    '''
+    def post(self,request):
+        modify_form = ModifyPwdForm(request.POST)
+        if modify_form.is_valid():
+            passwd1 = request.POST.get('password1', '')
+            passwd2 = request.POST.get('password2', '')
+            if passwd1 != passwd2:
+                return HttpResponse(json.dumps({'msg': '密码不一致', 'email': ''}),content_type='application/json')
+            user = request.user
+            user.password = make_password(passwd1)
+            user.save()
+            return HttpResponse(json.dumps({'status':'success'}),content_type='application/json')
+        return HttpResponse(json.dumps({'status':'fail'}),content_type='application/json')
 
 
 #函数式写法
@@ -146,5 +177,11 @@ def user_logout(request):
 
 
 
+def page_not_found(request):
+    response = render(request,'404.html')
+    #response.status_code = '404'
+    return response
 
-
+def page_error(request):
+    response = render(request,'500.html')
+    return response
