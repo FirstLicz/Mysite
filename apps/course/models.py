@@ -32,7 +32,7 @@ class Course(models.Model):
     is_banner = models.BooleanField(verbose_name='是否轮播',max_length=1,default=False)
     desc = models.CharField(max_length=300,verbose_name='课程描述')
     detail = UEditorField(verbose_name='课程详情',default='', width=600, height=300,filePath="course/ueditor/", blank=True)
-    degree = models.CharField(max_length=2,choices=DEGREE,verbose_name='等级')
+    degree = models.CharField(max_length=2,choices=DEGREE,verbose_name='等级',default='cj')
     learn_times = models.IntegerField(default=0,verbose_name='学习时长',help_text='存储单位是分钟')
     students = models.IntegerField(default=0,verbose_name='学习人数')
     fav_nums = models.IntegerField(default=0,verbose_name='收藏人数')

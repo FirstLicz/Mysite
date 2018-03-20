@@ -40,3 +40,18 @@ get_fieldname_display
 
 
 template 中关闭转义功能  {% autoescape off %}{{}}{% endautoescape %}
+
+
+处理上传xls文件
+def post(self, request, *args, **kwargs):
+ form = UploadExcelForm(request.POST, request.FILES)
+ if form.is_valid():
+ wb = xlrd.open_workbook(
+  filename=None, file_contents=request.FILES['excel'].read()) # 关键点在于这里
+ table = wb.sheets()[0]
+ row = table.nrows
+ for i in xrange(1, row):
+  col = table.row_values(i)
+  print col
+ return HttpResponse("ok")
+

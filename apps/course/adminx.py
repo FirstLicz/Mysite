@@ -6,6 +6,9 @@ __time__ = '2018/2/7 11:16'
 
 
 import xadmin
+from xlrd import open_workbook
+
+from django.shortcuts import HttpResponseRedirect
 
 from .models import Course,CourseResource,Video,Lession,BannerCourse
 from users.models import Banner
@@ -32,6 +35,8 @@ class CourseAdmin(object):
     refresh_times = ['3',]
     inlines = [LessonInline,CourseResourceInline]
     style_fields = {'detail':'ueditor'}
+    import_excel = True
+
 
     def queryset(self):
         qs = super(CourseAdmin,self).queryset()
@@ -46,6 +51,36 @@ class CourseAdmin(object):
             course_org = obj.course_org
             course_org.courses = Course.objects.filter(course_org=course_org).count()
             course_org.save()
+    #定义重载post方法来获取excel表格中的数据
+    def post(self,request,*args,**kwargs):
+        if 'excel' in request.FILES:
+            execl_file = request.FILES.get('excel')
+            print(execl_file)
+            files = open_workbook(filename=None, file_contents=request.FILES['excel'].read())
+            print(files.sheet_by_index(0).cell(0,0))
+            print(len(files.sheet_names()))
+            for index in range(len(files.sheet_names())):
+                table = files.sheet_by_index(index)
+                nrows= table.nrows
+                print(nrows)
+                for x in range(1,nrows):
+                    course = Course()
+                    #取出单元数据name','desc','detail','degree','learn_times','students','fav_nums','image','click_nums','add_time
+                    course.name = files.sheet_by_index(index).row_values(x)[0]
+                    course.desc = files.sheet_by_index(index).row_values(x)[1]
+                    course.detail = files.sheet_by_index(index).row_values(x)[2]
+                    course.degree = files.sheet_by_index(index).row_values(x)[3]
+                    tmp = files.sheet_by_index(index).row_values(x)[4]
+                    print(type(tmp))
+                    course.learn_times = int(files.sheet_by_index(index).row_values(x)[4])
+                    course.students = int(files.sheet_by_index(index).row_values(x)[5])
+                    course.fav_nums = int(files.sheet_by_index(index).row_values(x)[6])
+                    course.image.name = files.sheet_by_index(index).row_values(x)[7]
+                    course.click_nums = int(files.sheet_by_index(index).row_values(x)[8])
+                    #course.add_time = files.sheet_by_index(index).cell(x,9)
+                    course.save()
+            return HttpResponseRedirect('/xadmin/course/course')
+        return super(CourseAdmin,self).post(request,*args,**kwargs)
 
 class BannerCourseAdmin(object):
 
