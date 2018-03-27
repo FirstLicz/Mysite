@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 
 from users.views import LoginView,user_logout,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView,\
-    page_not_found
+    page_not_found,IndexView
 from Mxonline.settings import MEDIA_ROOT
 
 
@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),  # 这是生成验证码的图片
     url(r'^ueditor/', include('DjangoUeditor.urls')),   #uediter 富文本 url
 
-    url(r'^$',TemplateView.as_view(template_name='index.html')),
+    url(r'^$',IndexView.as_view(),name='index'),
     url(r'^login/$',LoginView.as_view(),name='login'),
     url(r'^register/$',RegisterView.as_view(),name='register'),
     url(r'^logout/$',user_logout,name='logout'),

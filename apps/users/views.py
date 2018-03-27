@@ -6,12 +6,14 @@ from django.contrib.auth import login,authenticate
 from django.views.generic import View
 
 
-from users.models import UserProfile,EmailVerifyRecord
+from users.models import UserProfile,EmailVerifyRecord,Banner
 from Mxonline.settings import BASE_DIR
 from .utils import decorate_logging_checker
 from .forms import LoginForm,RegisterForm,ForgetPwdForm,ModifyPwdForm,ModifyHeadForm
 from utils.email_send import send_email
 from utils.login_utils import LoginRequiredMust
+from course.models import Course
+from organization.models import CourseOrg
 
 import json
 import logging
@@ -20,6 +22,27 @@ import logging
 
 
 logger = logging.getLogger('defualt')
+
+
+class IndexView(View):
+
+    def get(self,request):
+        #首页轮播图
+        banners = Banner.objects.all()[:5]
+        #课程轮播图
+        course_banners = Course.objects.filter(is_banner=True)[:3]
+        # 课程轮
+        courses = Course.objects.filter(is_banner=False)[:6]
+        #机构
+        orgs = CourseOrg.objects.all()[:15]
+        return render(request,'index.html',{
+            "banners":banners,
+            "course_banners":course_banners,
+            "courses":courses,
+            "orgs":orgs,
+        })
+
+
 
 
 class LoginView(View):

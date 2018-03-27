@@ -45,28 +45,3 @@ def excel_into_model(appname,model_name,excel_file):
         exec ('obj.save()')
     return field_name
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
